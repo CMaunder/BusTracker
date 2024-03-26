@@ -1,6 +1,5 @@
 package com.cmaunder.bustracker.vehicleActivity;
 
-import com.cmaunder.bustracker.utils.Direction;
 import com.cmaunder.bustracker.utils.RequestService;
 import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +16,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;

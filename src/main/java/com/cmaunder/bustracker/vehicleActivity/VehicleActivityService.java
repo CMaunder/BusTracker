@@ -1,6 +1,5 @@
 package com.cmaunder.bustracker.vehicleActivity;
 
-import com.cmaunder.bustracker.utils.Direction;
 import com.cmaunder.bustracker.utils.RequestService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -1,8 +1,6 @@
 package com.cmaunder.bustracker.vehicleActivity;
 
-import com.cmaunder.bustracker.utils.Direction;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 

@@ -1,4 +1,4 @@
-package com.cmaunder.bustracker.utils;
+package com.cmaunder.bustracker.vehicleActivity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
