@@ -8,7 +8,7 @@
                 "            <ValidUntil>2024-03-24T10:39:55.545248+00:00</ValidUntil>" +
                 "            <ShortestPossibleCycle>PT5S</ShortestPossibleCycle>" +
                 "            <VehicleActivity>" +
-                "                <RecordedAtTime>1995-03-24T00:00:00+00:00</RecordedAtTime>" +
+                "                <RecordedAtTime>1995-03-25T00:00:00+00:00</RecordedAtTime>" +
                 "                <ItemIdentifier>109c5cae-df96-4c1e-88aa-9f81d1198142</ItemIdentifier>" +
                 "                <ValidUntilTime>1995-03-24T01:00:00.000000</ValidUntilTime>" +
                 "                <MonitoredVehicleJourney>" +

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -36,13 +37,23 @@ public class VehicleActivityController {
     }
 
     @GetMapping(path = "vehicle/{vehicleRef}")
-    public List<VehicleActivity> getActivitiesByVehicleRef(@PathVariable("vehicleRef") String vehicleRef, @RequestParam(required = false) String direction) {
-        return vehicleActivityService.getActivitiesByVehicleRef(vehicleRef, direction);
+    public List<VehicleActivity> getActivitiesByVehicleRef(@PathVariable("vehicleRef") String vehicleRef,
+                                                           @RequestParam(required = false) String direction,
+                                                           @RequestParam(required = false) String since) {
+        if (since != null) {
+            return vehicleActivityService.getActivitiesByVehicleRef(vehicleRef, direction, LocalDateTime.parse(since));
+        }
+        return vehicleActivityService.getActivitiesByVehicleRef(vehicleRef, direction, null);
     }
 
     @GetMapping(path = "route/{route}")
-    public List<VehicleActivity> getActivitiesByRoute(@PathVariable("route") String route, @RequestParam(required = false) String direction) {
-        return vehicleActivityService.getActivitiesByRoute(route, direction);
+    public List<VehicleActivity> getActivitiesByRoute(@PathVariable("route") String route,
+                                                      @RequestParam(required = false) String direction,
+                                                      @RequestParam(required = false) String since) {
+        if (since != null) {
+            return vehicleActivityService.getActivitiesByRoute(route, direction, LocalDateTime.parse(since));
+        }
+        return vehicleActivityService.getActivitiesByRoute(route, direction, null);
     }
 
 }

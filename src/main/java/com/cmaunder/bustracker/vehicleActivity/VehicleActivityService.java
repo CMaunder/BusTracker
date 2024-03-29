@@ -18,8 +18,11 @@ import org.json.XML;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -53,15 +56,24 @@ public class VehicleActivityService {
                 .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
                 .build().registerModule(new JavaTimeModule());
         List<VehicleActivity> vehicleActivities = mapper.readValue(vehicleActivityJson.toString(), new TypeReference<>(){});
-
-        int count = 0;
-        for (VehicleActivity vehicleActivity: vehicleActivities)
-            try {
-                vehicleActivityRepository.save(vehicleActivity);
-                count ++;
-            } catch (DataIntegrityViolationException ignored)  {
+        long start = System.currentTimeMillis();
+        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAll();
+        List<VehicleActivity> activitiesToSave = new ArrayList<>();
+        for (VehicleActivity a: vehicleActivities) {
+            boolean dupe = false;
+            for (VehicleActivity ea: existingActivities) {
+                if (a.getRecordedAtTime().isEqual(ea.getRecordedAtTime()) && Objects.equals(a.getVehicleRef(), ea.getVehicleRef())) {
+                    dupe = true;
+                }
             }
-        return count;
+            if (!dupe) {
+                activitiesToSave.add(a);
+            }
+        }
+        long finish = System.currentTimeMillis();
+        long timeElapsed = finish - start;
+        System.out.println("It took " + timeElapsed + " milliseconds to fetch and check dupes.");
+        return vehicleActivityRepository.saveAll(activitiesToSave).size();
     }
 
     private static void flattenVehicleActivityJson(JSONArray vehicleActivityJson) {
@@ -94,16 +106,28 @@ public class VehicleActivityService {
         return vehicleActivityRepository.findAll();
     }
 
-    public List<VehicleActivity> getActivitiesByVehicleRef(String vehicleRef, String direction) {
-        List<VehicleActivity> vehicleActivityData = vehicleActivityRepository.findAllByVehicleRefOrderByRecordedAtTimeDesc(vehicleRef);
+    public List<VehicleActivity> getActivitiesByVehicleRef(String vehicleRef, String direction, LocalDateTime since) {
+        List<VehicleActivity> vehicleActivityData;
+        if (since != null) {
+            vehicleActivityData = vehicleActivityRepository.findAllActivitiesByVehicleRefSince(vehicleRef, since);
+        } else {
+            vehicleActivityData = vehicleActivityRepository
+                    .findAllByVehicleRefOrderByRecordedAtTimeDesc(vehicleRef);
+        }
         if (direction == null) {
             return vehicleActivityData;
         }
         return filterByDirection(vehicleActivityData, Direction.valueOf(direction));
     }
 
-    public List<VehicleActivity> getActivitiesByRoute(String route, String direction){
-        List<VehicleActivity> vehicleActivityData = vehicleActivityRepository.findAllByPublishedLineNameOrderByRecordedAtTimeDesc(route);
+    public List<VehicleActivity> getActivitiesByRoute(String route, String direction, LocalDateTime since){
+        List<VehicleActivity> vehicleActivityData;
+        if (since != null) {
+            vehicleActivityData = vehicleActivityRepository.findAllActivitiesByRouteSince(route, since);
+        } else {
+            vehicleActivityData = vehicleActivityRepository
+                    .findAllByPublishedLineNameOrderByRecordedAtTimeDesc(route);
+        }
         if (direction == null) {
             return vehicleActivityData;
         }

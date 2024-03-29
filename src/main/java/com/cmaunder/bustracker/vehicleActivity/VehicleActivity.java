@@ -1,6 +1,7 @@
 package com.cmaunder.bustracker.vehicleActivity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
@@ -19,22 +20,19 @@ public class VehicleActivity {
     public VehicleActivity() {
     }
 
-    public VehicleActivity(LocalDateTime recordedAtTime, String itemIdentifier, LocalDateTime validUntilTime, Direction directionRef, String publishedLineName, String operatorRef, String originRef, String originName, String destinationRef, String destinationName, String latitude, String longitude, String blockRef, String vehicleRef, double bearing, String lineRef) {
+    public VehicleActivity(LocalDateTime recordedAtTime, String itemIdentifier, LocalDateTime validUntilTime, Direction directionRef, String publishedLineName, String operatorRef, String originName, String destinationName, String latitude, String longitude, String blockRef, String vehicleRef, double bearing) {
         this.recordedAtTime = recordedAtTime;
         this.itemIdentifier = itemIdentifier;
         this.validUntilTime = validUntilTime;
         this.directionRef = directionRef;
         this.publishedLineName = publishedLineName;
         this.operatorRef = operatorRef;
-        this.originRef = originRef;
         this.originName = originName;
-        this.destinationRef = destinationRef;
         this.destinationName = destinationName;
         this.latitude = latitude;
         this.longitude = longitude;
         this.blockRef = blockRef;
         this.vehicleRef = vehicleRef;
-        this.lineRef = lineRef;
     }
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
@@ -44,13 +42,13 @@ public class VehicleActivity {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS")
     private LocalDateTime validUntilTime;
-
-    private String lineRef;
     private Direction directionRef;
     private String publishedLineName;
     private String operatorRef;
+    @JsonIgnore
     private String originRef;
     private String originName;
+    @JsonIgnore
     private String destinationRef;
     private String destinationName;
     private String longitude;
@@ -81,14 +79,6 @@ public class VehicleActivity {
 
     public void setValidUntilTime(LocalDateTime validUntilTime) {
         this.validUntilTime = validUntilTime;
-    }
-
-    public String getLineRef() {
-        return lineRef;
-    }
-
-    public void setLineRef(String lineRef) {
-        this.lineRef = lineRef;
     }
 
     public Direction getDirectionRef() {
@@ -193,7 +183,6 @@ public class VehicleActivity {
                 "recordedAtTime=" + recordedAtTime +
                 ", itemIdentifier='" + itemIdentifier + '\'' +
                 ", validUntilTime=" + validUntilTime +
-                ", lineRef='" + lineRef + '\'' +
                 ", directionRef=" + directionRef +
                 ", publishedLineName='" + publishedLineName + '\'' +
                 ", operatorRef='" + operatorRef + '\'' +
