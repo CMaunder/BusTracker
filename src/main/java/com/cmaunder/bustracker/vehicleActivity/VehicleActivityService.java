@@ -58,6 +58,8 @@ public class VehicleActivityService {
         List<VehicleActivity> vehicleActivities = mapper.readValue(vehicleActivityJson.toString(), new TypeReference<>(){});
         long start = System.currentTimeMillis();
         List<VehicleActivity> existingActivities = vehicleActivityRepository.findAll();
+        long finish = System.currentTimeMillis();
+        long start2 = System.currentTimeMillis();
         List<VehicleActivity> activitiesToSave = new ArrayList<>();
         for (VehicleActivity a: vehicleActivities) {
             boolean dupe = false;
@@ -70,9 +72,12 @@ public class VehicleActivityService {
                 activitiesToSave.add(a);
             }
         }
-        long finish = System.currentTimeMillis();
+        long finish2 = System.currentTimeMillis();
+
         long timeElapsed = finish - start;
-        System.out.println("It took " + timeElapsed + " milliseconds to fetch and check dupes.");
+        long timeElapsed2 = finish2 - start2;
+        System.out.println("It took " + timeElapsed + " milliseconds to fetch and " + timeElapsed2 + " milliseconds" +
+                " to process dupe checking in code.");
         return vehicleActivityRepository.saveAll(activitiesToSave).size();
     }
 

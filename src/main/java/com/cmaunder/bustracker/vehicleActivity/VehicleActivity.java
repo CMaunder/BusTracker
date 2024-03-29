@@ -45,10 +45,8 @@ public class VehicleActivity {
     private Direction directionRef;
     private String publishedLineName;
     private String operatorRef;
-    @JsonIgnore
     private String originRef;
     private String originName;
-    @JsonIgnore
     private String destinationRef;
     private String destinationName;
     private String longitude;
