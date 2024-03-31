@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping(path="api/v1/activity")
+@RequestMapping(path = "api/v1/activity")
 public class VehicleActivityController {
 
     private final VehicleActivityService vehicleActivityService;
@@ -21,7 +21,7 @@ public class VehicleActivityController {
     }
 
     @GetMapping(path = "update-records")
-    public String updateRecords(){
+    public String updateRecords() {
         int numberOfRecordsSaved;
         try {
             numberOfRecordsSaved = vehicleActivityService.fetchAndSaveActivityData(10);
