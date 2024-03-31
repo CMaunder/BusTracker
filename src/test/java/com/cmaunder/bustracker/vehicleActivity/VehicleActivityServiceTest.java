@@ -79,7 +79,7 @@ public class VehicleActivityServiceTest {
         when(repository.findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(any()))
                 .thenReturn(List.of(getVehicleActivity("109c5cae-df96-4c1e-88aa-9f81d1198142",
                         Direction.OUTBOUND,
-                        LocalDateTime.now(ZoneOffset.UTC).toString())));
+                        LocalDateTime.of(1995, Month.MARCH, 24, 0, 0).toString())));
         vehicleActivityService.fetchAndSaveActivityData(100000000);
         verify(repository, times(1)).saveAll(vehicleActivityCaptor.capture());
         assertEquals(List.of(getVehicleActivity("109c5cae-df96-4c1e-88aa-9f81d1198142",
@@ -219,10 +219,12 @@ public class VehicleActivityServiceTest {
                 direction,
                 "17",
                 "BLUS",
+                "1980SN120747",
                 "Barnfield_Road",
+                "1900HAA91092",
                 "Adanac_Park",
-                "50.93528",
                 "-1.467218",
+                "50.93528",
                 "74022",
                 "1557",
                 0.0);
@@ -237,10 +239,12 @@ public class VehicleActivityServiceTest {
                 Direction.OUTBOUND,
                 "17",
                 "BLUS",
+                "1980SN120747",
                 "Barnfield_Road",
+                "1900HAA91092",
                 "Adanac_Park",
-                "50.93528",
                 "-1.467218",
+                "50.93528",
                 "74022",
                 "1557",
                 0.0);

@@ -49,6 +49,6 @@ public class VehicleActivityControllerTest {
         mockMvc.perform(get("/api/v1/activity/update-records"))
                 .andExpect(status().isOk())
                 .andExpect(content().string("Successfully wrote 0 new records to database."));
-        verify(service, times(1)).fetchAndSaveActivityData(100000000);
+        verify(service, times(1)).fetchAndSaveActivityData(10);
     }
 }

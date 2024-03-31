@@ -35,6 +35,24 @@ public class VehicleActivity {
         this.vehicleRef = vehicleRef;
     }
 
+    public VehicleActivity(LocalDateTime recordedAtTime, String itemIdentifier, LocalDateTime validUntilTime, Direction directionRef, String publishedLineName, String operatorRef, String originRef, String originName, String destinationRef, String destinationName, String longitude, String latitude, String blockRef, String vehicleRef, double bearing) {
+        this.recordedAtTime = recordedAtTime;
+        this.itemIdentifier = itemIdentifier;
+        this.validUntilTime = validUntilTime;
+        this.directionRef = directionRef;
+        this.publishedLineName = publishedLineName;
+        this.operatorRef = operatorRef;
+        this.originRef = originRef;
+        this.originName = originName;
+        this.destinationRef = destinationRef;
+        this.destinationName = destinationName;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.blockRef = blockRef;
+        this.vehicleRef = vehicleRef;
+        this.bearing = bearing;
+    }
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
     private LocalDateTime recordedAtTime;
     @Id
