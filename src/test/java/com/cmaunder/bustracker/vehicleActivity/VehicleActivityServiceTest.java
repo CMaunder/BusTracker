@@ -16,7 +16,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -99,7 +98,6 @@ public class VehicleActivityServiceTest {
 
         List<VehicleActivity> vehicleActivityList = vehicleActivityService
                 .getActivitiesByVehicleRef("1557", null, null);
-
         assertEquals(4, vehicleActivityList.size());
     }
 
