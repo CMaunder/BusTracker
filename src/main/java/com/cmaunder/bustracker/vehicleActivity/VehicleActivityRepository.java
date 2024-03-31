@@ -14,7 +14,7 @@ public interface VehicleActivityRepository extends JpaRepository<VehicleActivity
 //    @Query("SELECT a FROM vehicle_activity WHERE")
     List<VehicleActivity> findAllByVehicleRefOrderByRecordedAtTimeDesc(String vehicleRef);
 
-    List<VehicleActivity> findAllByRecordedAtTimeAfter(LocalDateTime since);
+    List<VehicleActivity> findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(LocalDateTime since);
 
     @Query("SELECT a from VehicleActivity a " +
             "WHERE a.vehicleRef = ?1 AND a.recordedAtTime >= ?2 " +
@@ -31,6 +31,3 @@ public interface VehicleActivityRepository extends JpaRepository<VehicleActivity
     Optional<VehicleActivity> findFirstBy();
 
 }
-
-
-//"2024-03-23T17:11:15Z",

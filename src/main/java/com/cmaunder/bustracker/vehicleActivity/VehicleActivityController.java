@@ -31,6 +31,15 @@ public class VehicleActivityController {
         return "Successfully wrote " + numberOfRecordsSaved + " new records to database.";
     }
 
+    @GetMapping
+    public List<VehicleActivity> getActivities(@RequestParam(required = false) String direction,
+                                               @RequestParam(required = false) String since,
+                                               @RequestParam(required = false) String vehicle,
+                                               @RequestParam(required = false) String route) {
+
+        return vehicleActivityService.getActivities(direction, since, vehicle, route);
+    }
+
     @GetMapping(path = "all")
     public List<VehicleActivity> getAllActivities() {
         return vehicleActivityService.getAllActivities();

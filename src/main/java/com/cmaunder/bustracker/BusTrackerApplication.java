@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 
 @SpringBootApplication
-public class BustrackerApplication {
+public class BusTrackerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(BustrackerApplication.class, args);
+		SpringApplication.run(BusTrackerApplication.class, args);
 	}
 
 }

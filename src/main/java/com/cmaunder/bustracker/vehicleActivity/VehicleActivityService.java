@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -60,7 +61,7 @@ public class VehicleActivityService {
         // Consider saving activities with a recorded at time in the last x minutes
         int lookBackMinutes = 10;
 
-        LocalDateTime currentTime = LocalDateTime.now();
+        LocalDateTime currentTime = LocalDateTime.now(ZoneOffset.UTC);
         List<VehicleActivity> filteredVehicleActivities = vehicleActivities.stream().
                 filter(activity ->
                         activity.getRecordedAtTime().toLocalDateTime().
@@ -75,7 +76,7 @@ public class VehicleActivityService {
 
 //        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAll();
         long start = System.currentTimeMillis();
-        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAllByRecordedAtTimeAfter(currentTime.minusMinutes(lookBackMinutes).minusSeconds(1));
+        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(currentTime.minusMinutes(lookBackMinutes).minusSeconds(1));
         long finish = System.currentTimeMillis();
         long start2 = System.currentTimeMillis();
         List<VehicleActivity> activitiesToSave = new ArrayList<>();
@@ -127,6 +128,30 @@ public class VehicleActivityService {
 
     public List<VehicleActivity> getAllActivities() {
         return vehicleActivityRepository.findAll();
+    }
+
+    public List<VehicleActivity> getActivities(String direction,
+                                               String since,
+                                               String vehicle,
+                                               String route) {
+        List<VehicleActivity> activities;
+        if (since == null) {
+            activities = vehicleActivityRepository.findAll();
+        } else {
+            activities = vehicleActivityRepository.findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(LocalDateTime.parse(since));
+        }
+        if (direction != null) {
+            activities = filterByDirection(activities, Direction.valueOf(direction));
+        }
+        if (vehicle != null) {
+            activities = activities.stream().filter(vehicleActivity ->
+                    vehicleActivity.getVehicleRef().equals(vehicle)).toList();
+        }
+        if (route != null) {
+            activities = activities.stream().filter(vehicleActivity ->
+                    vehicleActivity.getPublishedLineName().equals(route)).toList();
+        }
+        return activities;
     }
 
     public List<VehicleActivity> getActivitiesByVehicleRef(String vehicleRef, String direction, LocalDateTime since) {
