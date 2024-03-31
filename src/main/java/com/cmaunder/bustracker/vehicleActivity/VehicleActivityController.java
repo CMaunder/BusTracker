@@ -24,7 +24,7 @@ public class VehicleActivityController {
     public String updateRecords(){
         int numberOfRecordsSaved;
         try {
-            numberOfRecordsSaved = vehicleActivityService.fetchAndSaveActivityData();
+            numberOfRecordsSaved = vehicleActivityService.fetchAndSaveActivityData(10);
         } catch (URISyntaxException | IOException | InterruptedException e) {
             return "Failed to update the data with the following reason: " + e;
         }

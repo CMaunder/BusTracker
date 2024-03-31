@@ -16,6 +16,7 @@ import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -59,7 +60,7 @@ public class VehicleActivityServiceTest {
                 StandardCharsets.UTF_8
         );
         when(requestService.get(anyString())).thenReturn(myXml);
-        vehicleActivityService.fetchAndSaveActivityData();
+        vehicleActivityService.fetchAndSaveActivityData(100000000);
         verify(repository, times(1)).saveAll(vehicleActivityCaptor.capture());
         assertEquals(Arrays.asList(getVehicleActivity("109c5cae-df96-4c1e-88aa-9f81d1198142",
                                 Direction.OUTBOUND,
@@ -75,8 +76,11 @@ public class VehicleActivityServiceTest {
                 StandardCharsets.UTF_8
         );
         when(requestService.get(anyString())).thenReturn(myXml);
-        when(repository.findAll()).thenReturn(List.of(getVehicleActivity("blahblah")));
-        vehicleActivityService.fetchAndSaveActivityData();
+        when(repository.findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(any()))
+                .thenReturn(List.of(getVehicleActivity("109c5cae-df96-4c1e-88aa-9f81d1198142",
+                        Direction.OUTBOUND,
+                        LocalDateTime.now(ZoneOffset.UTC).toString())));
+        vehicleActivityService.fetchAndSaveActivityData(100000000);
         verify(repository, times(1)).saveAll(vehicleActivityCaptor.capture());
         assertEquals(List.of(getVehicleActivity("109c5cae-df96-4c1e-88aa-9f81d1198142",
                         Direction.OUTBOUND,

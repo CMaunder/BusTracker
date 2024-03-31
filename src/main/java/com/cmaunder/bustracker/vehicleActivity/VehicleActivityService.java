@@ -39,7 +39,7 @@ public class VehicleActivityService {
         this.vehicleActivityRepository = vehicleActivityRepository;
     }
 
-    public int fetchAndSaveActivityData() throws URISyntaxException, IOException, InterruptedException {
+    public int fetchAndSaveActivityData(int lookBackMinutes) throws URISyntaxException, IOException, InterruptedException {
         String xmlBody = requestService.get("https://data.bus-data.dft.gov.uk/api/v1/datafeed/7721/");
         JSONObject jsonObject = XML.toJSONObject(xmlBody);
         JSONArray vehicleActivityJson = jsonObject
@@ -59,8 +59,6 @@ public class VehicleActivityService {
         List<VehicleActivity> vehicleActivities = mapper.readValue(vehicleActivityJson.toString(), new TypeReference<>(){});
 
         // Consider saving activities with a recorded at time in the last x minutes
-        int lookBackMinutes = 10;
-
         LocalDateTime currentTime = LocalDateTime.now(ZoneOffset.UTC);
         List<VehicleActivity> filteredVehicleActivities = vehicleActivities.stream().
                 filter(activity ->
@@ -76,7 +74,9 @@ public class VehicleActivityService {
 
 //        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAll();
         long start = System.currentTimeMillis();
-        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(currentTime.minusMinutes(lookBackMinutes).minusSeconds(1));
+        List<VehicleActivity> existingActivities = vehicleActivityRepository
+                .findAllByRecordedAtTimeAfterOrderByRecordedAtTimeDesc(currentTime.
+                        minusMinutes(lookBackMinutes).minusSeconds(1));
         long finish = System.currentTimeMillis();
         long start2 = System.currentTimeMillis();
         List<VehicleActivity> activitiesToSave = new ArrayList<>();

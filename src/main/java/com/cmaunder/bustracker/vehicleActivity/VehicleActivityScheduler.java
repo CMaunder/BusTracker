@@ -21,7 +21,7 @@ public class VehicleActivityScheduler {
     @Scheduled(initialDelayString = "PT1S", fixedRateString = "PT1M")
     void scheduledVehicleActivityUpdate() throws URISyntaxException, IOException, InterruptedException {
         System.out.println("Calling fetchAndSaveActivityData");
-        int number_new_records_saved = vehicleActivityService.fetchAndSaveActivityData();
+        int number_new_records_saved = vehicleActivityService.fetchAndSaveActivityData(10);
         System.out.println("Saved " + number_new_records_saved + " new vehicle activity records.");
     }
 }
