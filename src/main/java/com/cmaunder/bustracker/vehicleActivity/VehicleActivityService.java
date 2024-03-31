@@ -56,12 +56,30 @@ public class VehicleActivityService {
                 .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
                 .build().registerModule(new JavaTimeModule());
         List<VehicleActivity> vehicleActivities = mapper.readValue(vehicleActivityJson.toString(), new TypeReference<>(){});
+
+        // Consider saving activities with a recorded at time in the last x minutes
+        int lookBackMinutes = 10;
+
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<VehicleActivity> filteredVehicleActivities = vehicleActivities.stream().
+                filter(activity ->
+                        activity.getRecordedAtTime().toLocalDateTime().
+                                isAfter(currentTime.minusMinutes(lookBackMinutes))).toList();
+
+//        LocalDateTime earliestDateToFetch = LocalDateTime.now();
+//        for (VehicleActivity activity: filteredVehicleActivities) {
+//            if (activity.getRecordedAtTime().toLocalDateTime().isBefore(earliestDateToFetch)) {
+//                earliestDateToFetch = activity.getRecordedAtTime().toLocalDateTime();
+//            }
+//        }
+
+//        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAll();
         long start = System.currentTimeMillis();
-        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAll();
+        List<VehicleActivity> existingActivities = vehicleActivityRepository.findAllByRecordedAtTimeAfter(currentTime.minusMinutes(lookBackMinutes).minusSeconds(1));
         long finish = System.currentTimeMillis();
         long start2 = System.currentTimeMillis();
         List<VehicleActivity> activitiesToSave = new ArrayList<>();
-        for (VehicleActivity a: vehicleActivities) {
+        for (VehicleActivity a: filteredVehicleActivities) {
             boolean dupe = false;
             for (VehicleActivity ea: existingActivities) {
                 if (a.getRecordedAtTime().isEqual(ea.getRecordedAtTime()) && Objects.equals(a.getVehicleRef(), ea.getVehicleRef())) {
