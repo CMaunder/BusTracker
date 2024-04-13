@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping(path = "api/v1/activity")
 public class VehicleActivityController {
 
