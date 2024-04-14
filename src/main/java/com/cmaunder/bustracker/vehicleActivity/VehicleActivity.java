@@ -1,15 +1,14 @@
 package com.cmaunder.bustracker.vehicleActivity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-
-import jakarta.persistence.*;
 
 @Entity
 @Table(uniqueConstraints = {
@@ -72,6 +71,10 @@ public class VehicleActivity {
     private String blockRef;
     private String vehicleRef;
     private double bearing;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+    private LocalDateTime originAimedDepartureTime;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssXXX")
+    private LocalDateTime destinationAimedArrivalTime;
 
     public OffsetDateTime getRecordedAtTime() {
         return recordedAtTime.atOffset(ZoneOffset.UTC);
@@ -191,6 +194,22 @@ public class VehicleActivity {
 
     public void setBearing(double bearing) {
         this.bearing = bearing;
+    }
+
+    public OffsetDateTime getOriginAimedDepartureTime() {
+        return originAimedDepartureTime.atOffset(ZoneOffset.UTC);
+    }
+
+    public void setOriginAimedDepartureTime(LocalDateTime originAimedDepartureTime) {
+        this.originAimedDepartureTime = originAimedDepartureTime;
+    }
+
+    public OffsetDateTime getDestinationAimedArrivalTime() {
+        return destinationAimedArrivalTime.atOffset(ZoneOffset.UTC);
+    }
+
+    public void setDestinationAimedArrivalTime(LocalDateTime destinationAimedArrivalTime) {
+        this.destinationAimedArrivalTime = destinationAimedArrivalTime;
     }
 
     @Override
